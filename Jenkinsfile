@@ -8,14 +8,7 @@ pipeline {
     }
 
     stages {
-        stage('Initialize tools') {
-            steps {
-                script {
-                    def dockerHome = tool 'myDocker'
-                    env.PATH = "${dockerHome}/bin:${env.PATH}"
-                }
-            }
-        }
+
         stage('Build Docker Image') {
             steps {
                 script {
