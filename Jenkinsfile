@@ -1,10 +1,6 @@
 pipeline {
     agent any
 
-    options {
-        skipDefaultCheckout(true)
-    }
-
     environment {
         REGISTRY_CREDS = 'docker-hub-credentials'
         IMAGE_NAME = 'talha09haseeb/local-node-app'
@@ -12,11 +8,6 @@ pipeline {
     }
 
     stages {
-        stage('Checkout') {
-            steps {
-                checkout scm
-            }
-        }
         stage('Initialize tools') {
             steps {
                 script {
