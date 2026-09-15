@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    options {
+        skipDefaultCheckout(true)
+    }
+
     environment {
         REGISTRY_CREDS = 'docker-hub-credentials'
         IMAGE_NAME = 'talha09haseeb/local-node-app'
@@ -8,6 +12,15 @@ pipeline {
     }
 
     stages {
+        stage('Checkout') {
+            steps {
+                git {
+                    url: 'https://github.com/talhaseeb/node-kubernetes-project',
+                    branch: 'main',
+                    credentialId: 'github-new'
+                }
+            }
+        }
         stage('Initialize tools') {
             steps {
                 script {
@@ -19,7 +32,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    sh "docker build -t ${IMAGE_NAME}:${IMAGE_TAG}"
+                    sh "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} ."
                 }
             }
         }
@@ -39,7 +52,7 @@ pipeline {
         stage('Deploy to Kubernetes') {
             steps {
                 script {
-                    sh "sed -i 's|talha09seeb/local-node-app:v1|${IMAGE_NAME}:${IMAGE_TAG}|g' deployment.yaml"
+                    sh "sed -i 's|talha09haseeb/local-node-app:v1|${IMAGE_NAME}:${IMAGE_TAG}|g' deployment.yaml"
 
                     sh "kubectl apply -f deployment.yaml"
                 }
