@@ -14,11 +14,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git {
-                    url: 'https://github.com/talhaseeb/node-kubernetes-project',
-                    branch: 'main',
-                    credentialId: 'github-new'
-                }
+                checkout scm
             }
         }
         stage('Initialize tools') {
