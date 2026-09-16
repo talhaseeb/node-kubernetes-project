@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: nodejs-app
-        image: talha09haseeb/local-node-app:25
+        image: talha09haseeb/local-node-app:26
         imagePullPolicy: Always
         ports:
         - containerPort: 3000
