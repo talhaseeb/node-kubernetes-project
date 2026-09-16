@@ -5,6 +5,7 @@ pipeline {
         REGISTRY_CREDS = 'docker-hub-credentials'
         IMAGE_NAME = 'talha09haseeb/local-node-app'
         IMAGE_TAG = "${BUILD_NUMBER}"
+        KUBECONFIG = '/var/jenkins_home/.kube/config'
     }
 
     stages {
@@ -37,11 +38,19 @@ pipeline {
 
         stage('Deploy to Kubernetes') {
             steps {
-                script {
-                    sh "sed -i 's|talha09haseeb/local-node-app:v1|${IMAGE_NAME}:${IMAGE_TAG}|g' deployment.yaml"
+                '''
+                    echo "Current Kubernetes Context"
+                    kubectl config current-context
 
-                    sh "kubectl apply -f deployment.yaml"
-                }
+                    echo "Kubernetes nodes:"
+                    kubectl get nodes
+
+                    echo "Updating deployment image..."
+                    sed -i 's|talha09haseeb/local-node-app:v1|${IMAGE_NAME}:${IMAGE_TAG}|g' deployment.yaml
+                    
+                    echo "Applying deployment..."
+                    kubectl apply -f deployment.yaml
+                '''
             }
         }
     }
