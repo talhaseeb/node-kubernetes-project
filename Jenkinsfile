@@ -38,7 +38,7 @@ pipeline {
 
         stage('Deploy to Kubernetes') {
             steps {
-                '''
+                sh '''
                     echo "Current Kubernetes Context"
                     kubectl config current-context
 
