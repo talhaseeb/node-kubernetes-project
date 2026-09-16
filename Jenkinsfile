@@ -45,11 +45,11 @@ pipeline {
                     echo "Kubernetes nodes:"
                     kubectl get nodes
 
-                    echo "Updating deployment image..."
-                    sed -i 's|talha09haseeb/local-node-app:v1|${IMAGE_NAME}:${IMAGE_TAG}|g' deployment.yaml
+                    echo "Deploying image: ${IMAGE_NAME}:${IMAGE_TAG}..."
+                    kubectl set image deployment/nodejs-app-deployment \
+                        nodejs-app=${IMAGE_NAME}:${IMAGE_TAG}
                     
-                    echo "Applying deployment..."
-                    kubectl apply -f deployment.yaml
+                    kubectl rollout status deployment/nodejs-app-deployment
                 '''
             }
         }
